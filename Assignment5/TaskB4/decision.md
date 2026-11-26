@@ -1,0 +1,7 @@
+# B4 – Final Engineering Decision
+
+The Compose extension runs two independently limited services: the result portal (0.50 CPU, 512 MiB) and a sample learning-management web service (0.25 CPU, 256 MiB). Start with `docker compose up -d` from this directory after ensuring the portal build context and Docker daemon are available.
+
+150,000 logins in two hours gives 150,000 / 7,200 = 20.83 logins/s average. If each login triggers eight HTTP requests, average demand is about 167 requests/s. With a fivefold peak and 30% headroom, target approximately 1,086 requests/s. If one container sustains measured R requests/s at the required latency, estimated replicas = ceil(1086 / (0.70 × R)). This is only a planning estimate; database contention, session storage and network limits can prevent linear scaling.
+
+Recommendation: hybrid. Retain private infrastructure for routine workloads and sensitive internal services; use a cloud load balancer and autoscaling application tier plus managed HA database or warm standby for burst. Pre-scale before result day, cache static assets, rate-limit abusive clients, tune database pooling and load-test. Compare annual cloud costs (baseline hours, burst hours, database, storage, monitoring, backup and egress) against hardware, power, cooling, licensing and staff. Cloud-only offers elasticity and fast capacity changes but increases provider dependency and data-governance considerations.
