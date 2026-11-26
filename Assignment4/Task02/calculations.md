@@ -15,6 +15,8 @@ An indirect block holds 4096/4 = 1024 addresses. Total inode data blocks = 12 + 
 
 For a 4 TB decimal disk and 4 KiB blocks: 976,562,500 blocks; bitmap size = 976,562,500/8 = 122,070,312.5 bytes ≈ 116.4 MiB. A 4 TiB disk requires 128 MiB.
 
-After B and D are released, 21 blocks are free but split into holes, none of length 10. Contiguous E fails; indexed allocation reserves one index block and ten arbitrary free data blocks and succeeds.
+**Important inconsistency in the supplied question:** after releasing B and D, there are 21 free blocks in two runs: blocks 6–13 (8 blocks) and 19–31 (13 blocks). Therefore, a first-fit contiguous allocation of 10 blocks **does succeed** at block 19. This matches the assignment's own expected output. The statement asking why E cannot be stored contiguously is inconsistent with the given allocation sequence and expected output. If the intended experiment is to demonstrate external fragmentation, change the file sizes/placement so every free run is shorter than 10 while total free space remains at least 10.
+
+The given program's indexed allocation then uses the remaining free blocks: index block 6 and data blocks 7–13, 29–31. Indexed allocation can handle scattered blocks, but in this exact run it is not needed to make the first E allocation succeed.
 
 FAT alternative: O(k) chain/table lookups to block k; a 4-byte FAT entry per disk block requires about 3.64 GiB for this 4 TB disk. Indexed access is O(1) for a single-level index or O(levels) for multi-level indexing.
