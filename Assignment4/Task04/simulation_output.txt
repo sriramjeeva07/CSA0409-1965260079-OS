@@ -1,0 +1,23 @@
+light load (100 requests; all arrive at t=0)
+ FCFS   total=6506 avg=65.06 max_wait=6493 cylinder-time
+ SSTF   total=249 avg=2.49 max_wait=243 cylinder-time
+ SCAN   total=251 avg=2.49 max_wait=245 cylinder-time
+ C-SCAN total=395 avg=3.91 max_wait=395 cylinder-time
+ LOOK   total=249 avg=2.49 max_wait=243 cylinder-time
+ C-LOOK total=391 avg=3.99 max_wait=389 cylinder-time
+medium load (1000 requests; all arrive at t=0)
+ FCFS   total=66318 avg=66.32 max_wait=66174 cylinder-time
+ SSTF   total=252 avg=0.25 max_wait=252 cylinder-time
+ SCAN   total=252 avg=0.25 max_wait=252 cylinder-time
+ C-SCAN total=397 avg=0.40 max_wait=397 cylinder-time
+ LOOK   total=252 avg=0.25 max_wait=252 cylinder-time
+ C-LOOK total=397 avg=0.40 max_wait=396 cylinder-time
+heavy load (10000 requests; all arrive at t=0)
+ FCFS   total=665382 avg=66.54 max_wait=665330 cylinder-time
+ SSTF   total=252 avg=0.03 max_wait=252 cylinder-time
+ SCAN   total=252 avg=0.03 max_wait=252 cylinder-time
+ C-SCAN total=397 avg=0.04 max_wait=397 cylinder-time
+ LOOK   total=252 avg=0.03 max_wait=252 cylinder-time
+ C-LOOK total=397 avg=0.04 max_wait=397 cylinder-time
+
+Model limitation: batch-only synthetic workload; all requests arrive at time zero and cylinder movement is used as service time. No request arrivals during service, rotational latency, or device cache are modelled.
