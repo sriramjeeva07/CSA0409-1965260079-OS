@@ -6,7 +6,7 @@ chmod +x log_summary.sh disk_alert.sh
 ./log_summary.sh
 ./disk_alert.sh
 ```
-Expected log summary:
+Executed output is saved in [execution_output.txt](execution_output.txt). Expected log summary:
 ```text
 Requests per status code:
 200 4
