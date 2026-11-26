@@ -4,12 +4,15 @@
 **Register number:** 1965260079  
 **Repository:** https://github.com/sriramjeeva07/CSA0409-1965260079-OS
 
-Assignments 1–3 were already present and have been left unchanged. This update adds only:
+Assignments 1–3 were already present in the repository. This update adds an organized Assignment 3 report and task overview while preserving the existing Assignment 3 ZIP package. It also retains the Assignment 4 and 5 materials.
 
+- [Assignment 3 – CO3: Memory Management, Virtual Memory and Disk Management](Assignment3/README.md)
+- [Assignment 3 detailed report](Assignment3/REPORT.md)
+- [Assignment 3 source-code and report ZIP](OS_Assignment_3_Code_and_Report.zip)
 - [Assignment 4 – CO4: Optimising File Storage and Disk Access](Assignment4/README.md)
 - [Assignment 5 – CO5: Linux, Containers and Virtualisation](Assignment5/README.md)
 - [Consolidated final report](FINAL_REPORT.md)
 
-**Code environment:** GCC 14.2.0, Debian GNU/Linux 13. C code uses `gcc -std=c11 -Wall -Wextra`.
+**Code environment recorded for Assignment 4/5:** GCC 14.2.0, Debian GNU/Linux 13. C code uses `gcc -std=c11 -Wall -Wextra`.
 
-The allocation and disk-scheduling C programs, synthetic disk-scheduling simulation, and Bash log-analysis script were executed. Docker, kubectl and a Kubernetes cluster were unavailable in the authoring environment. Container, host-inspection and cluster instructions are supplied, but their host-specific execution evidence and screenshots must be captured on the student's own machine.
+**Assignment 3 evidence note:** Complete the execution evidence using your own Linux system. Add actual compiler/system versions, terminal outputs, screenshots, timings, page-fault counts, graphs and memory measurements. Illustrative values in the report are not a substitute for running the programs.
