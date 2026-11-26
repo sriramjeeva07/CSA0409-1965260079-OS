@@ -1,0 +1,7 @@
+# A1 – Linux System Components
+
+The Linux kernel is the privileged core managing processes, memory, filesystems, devices and networking through system calls. System libraries such as glibc wrap system calls; shell interprets commands/scripts; utilities such as ps, systemctl, ip and df administer the system. CFS (with newer kernels moving toward EEVDF scheduling) shares CPU among runnable tasks; it is fair but not hard real-time. The page cache speeds repeated reads and buffers writes; reclaim and swap handle pressure, but excessive swapping increases latency. /proc exposes process/kernel runtime data; /sys exposes structured device/kernel attributes.
+
+FHS separates /etc configuration, /var variable data/logs, /home user data, /usr software and /dev device nodes. VFS provides a common interface across filesystem types. Permissions apply read/write/execute to owner/group/others; ACLs add per-user rules. Setuid runs with file owner's effective UID and must be tightly controlled. sudo grants approved privileged commands with policy/logging.
+
+Windows Server alternative: Server Core reduces footprint vs GUI. Linux shell/systemd/Ansible and Windows PowerShell/DSC both automate administration; effort depends on team expertise. Windows licensing is generally per-core with CAL considerations; exact cost depends on edition/core/access model and must be quoted. Linux is a natural fit for a Python/Linux-native portal.
