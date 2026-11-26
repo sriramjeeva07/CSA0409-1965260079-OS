@@ -1,33 +1,57 @@
 #!/usr/bin/env python3
-"""Reproducible batch model: all requests in a batch arrive at time zero."""
+"""Reproducible synthetic batch simulation; every request arrives at t=0."""
 import random
+
 random.seed(409)
-MAX=199
-def order(name,head,q):
-    if name=="FCFS": return q[:]
-    if name=="SSTF":
-        p=head; pending=q[:]; out=[]
+MAX_CYL = 199
+
+
+def order(name, head, requests):
+    if name == "FCFS":
+        return requests[:]
+    if name == "SSTF":
+        pos, pending, result = head, requests[:], []
         while pending:
-            x=min(pending,key=lambda v:(abs(v-p),v)); pending.remove(x); out.append(x); p=x
-        return out
-    lo=sorted((x for x in q if x<head),reverse=True); hi=sorted(x for x in q if x>=head)
-    if name=="SCAN": return lo+[0]+hi
-    if name=="LOOK": return lo+hi
-    if name=="C-SCAN": return hi+[MAX]+sorted(x for x in q if x<head)
-    if name=="C-LOOK": return lo+sorted((x for x in q if x>head),reverse=True)
+            item = min(pending, key=lambda x: (abs(x - pos), x))
+            pending.remove(item)
+            result.append(item)
+            pos = item
+        return result
+
+    lower = sorted((x for x in requests if x < head), reverse=True)
+    upper = sorted(x for x in requests if x >= head)
+    if name == "SCAN":
+        return lower + [0] + upper
+    if name == "LOOK":
+        return lower + upper
+    if name == "C-SCAN":
+        return upper + [MAX_CYL] + sorted(x for x in requests if x < head)
+    if name == "C-LOOK":
+        return lower + sorted((x for x in requests if x > head), reverse=True)
     raise ValueError(name)
-def measure(head,seq,name):
-    p=head; total=0; elapsed=0; waits=[]
-    for x in seq:
-        d=abs(x-p); total+=d; waits.append(elapsed); elapsed+=d; p=x
-    if name=="C-SCAN" and MAX in seq:
-        i=seq.index(MAX)
-        if i+1<len(seq): total+=MAX; elapsed+=MAX
-    return total,total/len(seq),max(waits,default=0)
-for label,n in [("light",100),("medium",1000),("heavy",10000)]:
-    q=[random.randrange(200) for _ in range(n)]
-    print(f"{label} load ({n} requests; all arrive at t=0)")
-    for alg in ["FCFS","SSTF","SCAN","C-SCAN","LOOK","C-LOOK"]:
-        seq=order(alg,53,q); total,avg,mw=measure(53,seq,alg)
-        print(f" {alg:6s} total={total} avg={avg:.2f} max_wait={mw} cylinder-time")
-print("Model limitation: batch-only synthetic workload; use arrival timestamps and measured device latency for production.")
+
+
+def metrics(head, sequence, algorithm):
+    pos, elapsed, total, waits = head, 0, 0, []
+    for cylinder in sequence:
+        waits.append(elapsed)
+        if algorithm == "C-SCAN" and pos == MAX_CYL and cylinder < MAX_CYL:
+            distance = MAX_CYL + cylinder  # travel to 0, then wrap to target
+        else:
+            distance = abs(cylinder - pos)
+        total += distance
+        elapsed += distance
+        pos = cylinder
+    return total, total / len(sequence), max(waits, default=0)
+
+
+for label, count in [("light", 100), ("medium", 1000), ("heavy", 10000)]:
+    requests = [random.randrange(200) for _ in range(count)]
+    print(f"{label} load ({count} requests; all arrive at t=0)")
+    for algorithm in ["FCFS", "SSTF", "SCAN", "C-SCAN", "LOOK", "C-LOOK"]:
+        sequence = order(algorithm, 53, requests)
+        total, average, maximum_wait = metrics(53, sequence, algorithm)
+        print(f" {algorithm:6s} total={total} avg={average:.2f} "
+              f"max_wait={maximum_wait} cylinder-time")
+print("Model limitation: batch-only synthetic workload; no arrivals during service, "
+      "rotational latency or device cache. Use measured device latency for production.")
