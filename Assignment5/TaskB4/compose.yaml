@@ -1,0 +1,13 @@
+services:
+  result-portal:
+    build: ../TaskB2
+    ports: ["8000:8000"]
+    cpus: 0.50
+    mem_limit: 512m
+    restart: unless-stopped
+  learning-management:
+    image: nginx:1.27-alpine
+    ports: ["8080:80"]
+    cpus: 0.25
+    mem_limit: 256m
+    restart: unless-stopped
