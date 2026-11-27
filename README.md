@@ -4,8 +4,9 @@
 **Register number:** 1965260079  
 **Repository:** https://github.com/sriramjeeva07/CSA0409-1965260079-OS
 
-Assignments 1–3 were already present in the repository. This update adds an organized Assignment 3 report and task overview while preserving the existing Assignment 3 ZIP package. It also retains the Assignment 4 and 5 materials.
+Assignments 1–3 were already present in the repository. The Operating Systems lab archive contains all 40 experiments. The GitHub Actions workflow now publishes Lab-04 through Lab-40 as individual folders, preserving the existing Lab-01 to Lab-03 and all assignment materials.
 
+- [Operating Systems Lab Experiments](https://github.com/sriramjeeva07/CSA0409-1965260079-OS)
 - [Assignment 3 – CO3: Memory Management, Virtual Memory and Disk Management](Assignment3/README.md)
 - [Assignment 3 detailed report](Assignment3/REPORT.md)
 - [Assignment 3 source-code and report ZIP](OS_Assignment_3_Code_and_Report.zip)
