@@ -1,0 +1,52 @@
+name: Publish OS Lab Experiments 04-40
+
+on:
+  push:
+    paths:
+      - "README.md"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  publish-labs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Extract remaining lab folders
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f Operating-System-Labs-All-40.zip
+          mkdir -p /tmp/os-labs
+          unzip -q Operating-System-Labs-All-40.zip -d /tmp/os-labs
+          for n in $(seq -w 4 40); do
+            folder="Lab-${n}"
+            test -d "/tmp/os-labs/${folder}"
+            cp -R "/tmp/os-labs/${folder}" "./${folder}"
+          done
+
+      - name: Compile all added C programs
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/os-lab-binaries
+          for n in $(seq -w 4 40); do
+            folder="Lab-${n}"
+            source_file=$(find "${folder}" -maxdepth 1 -name '*.c' -print -quit)
+            test -n "${source_file}"
+            gcc -D_DEFAULT_SOURCE -std=c11 -Wall -Wextra -pthread "${source_file}" -o "/tmp/os-lab-binaries/${folder}"
+          done
+
+      - name: Commit Lab 04 to Lab 40
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add Lab-04 Lab-05 Lab-06 Lab-07 Lab-08 Lab-09 Lab-10 Lab-11 Lab-12 Lab-13 Lab-14 Lab-15 Lab-16 Lab-17 Lab-18 Lab-19 Lab-20 Lab-21 Lab-22 Lab-23 Lab-24 Lab-25 Lab-26 Lab-27 Lab-28 Lab-29 Lab-30 Lab-31 Lab-32 Lab-33 Lab-34 Lab-35 Lab-36 Lab-37 Lab-38 Lab-39 Lab-40
+          git commit -m "Add OS lab experiments 04-40"
+          git push
